@@ -62,16 +62,9 @@ public class RandomStairGenerator : MonoBehaviour
             for (int i = 0; i < rndAmount; i++)
             {
                 GameObject newStair = Instantiate(stair, StairChoice(stairsAmount[i]).position, StairChoice(stairsAmount[i]).rotation);
-                if (newStair.transform.Find("PEnd").GetComponent<StairEndPoint>().isOccupied)
-                {
-                    Destroy(newStair);
-                    spawnedStairs--;
-                }
-                else
-                {
-                    Instantiate(platform, newStair.transform).name = "Platform";
-                    stairs.Add(newStair);
-                }
+                GameObject p = Instantiate(platform, newStair.transform);
+                p.name = "Platform";
+                stairs.Add(newStair);
             }
         }
         else
@@ -80,18 +73,12 @@ public class RandomStairGenerator : MonoBehaviour
             if (isMain)rndChoice = Random.Range(1, 5);
             else rndChoice = Random.Range(1, 4);
             GameObject newStair = Instantiate(stair, StairChoice(rndChoice).position, StairChoice(rndChoice).rotation);
-            if (newStair.transform.Find("PEnd").GetComponent<StairEndPoint>().isOccupied)
-            {
-                Destroy(newStair);
-            }
-            else
-            {
-                Instantiate(platform, newStair.transform).name = "Platform";
-                stairs.Add(newStair);
-            }
+            GameObject p = Instantiate(platform, newStair.transform);
+            p.name = "Platform";
+            stairs.Add(newStair);
         }
     }
-    public void StairSpawn()//for testing purpouse 
+    public void StairSpawn()//not main, for testing purpouse 
     {
         if (GameObject.FindGameObjectWithTag("Stair"))
         {
@@ -147,7 +134,7 @@ public class RandomStairGenerator : MonoBehaviour
             Instantiate(stair, StairChoice(rndChoice).position, StairChoice(rndChoice).rotation);
         }
     }
-    private Transform StairChoice(int n)
+    private Transform StairChoice(int n) //random choice of stairs
     {
         Transform newTransform = transform;
         switch (n)
@@ -186,5 +173,9 @@ public class RandomStairGenerator : MonoBehaviour
             startStairs.Clear();
             startStairs = newStairs;
         }
+    }
+    public IEnumerator CDTrick()
+    {
+        yield return new WaitForSeconds(0.5f);
     }
 }
